@@ -17,6 +17,9 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
   String _technologies = "";
   String _projectLink = "";
 
+  // Dinaikkan setiap form di-reset agar dropdown dibangun ulang dengan nilai awal.
+  int _resetCount = 0;
+
   final List<String> _categories = [
     'Web Development',
     'Mobile Development',
@@ -99,6 +102,7 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: DropdownButtonFormField<String>(
+                  key: ValueKey('category-$_resetCount'),
                   decoration: InputDecoration(
                     labelText: "Kategori Proyek",
                     border: OutlineInputBorder(
@@ -202,6 +206,7 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
                                       _category = "Web Development";
                                       _technologies = "";
                                       _projectLink = "";
+                                      _resetCount++;
                                     });
                                   },
                                 ),
