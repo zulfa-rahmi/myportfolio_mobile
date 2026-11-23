@@ -179,3 +179,86 @@ Saya memberikan instruksi Tutorial 08, dokumen Individual Assignment 7, serta ko
 Saran kode dan penjelasan yang diberikan oleh AI ditinjau kembali dan disesuaikan dengan struktur proyek yang sudah ada. Implementasi tetap mengacu pada materi dan pola pengerjaan Tutorial 08.
 
 Saya bertanggung jawab untuk memahami, meninjau, menguji, dan memverifikasi seluruh implementasi akhir sebelum dikumpulkan.
+
+
+## Tugas 8
+
+### 1. Jelaskan perbedaan antara Navigator.push(), Navigator.pushReplacement(), dan Navigator.pop()! Metode apa yang digunakan untuk membuka formulir dari kartu aksi? Jelaskan juga bagaimana opsi Home di drawer membawa pengguna kembali ke halaman utama.
+
+Navigator mengelola halaman (route) sebagai tumpukan atau stack. Perbedaan ketiga method tersebut terletak pada apa yang dilakukan terhadap route yang berada di atas stack.
+
+- `Navigator.push()`: menambahkan route baru di atas stack. Halaman sebelumnya tetap ada di bawahnya sehingga pengguna dapat kembali.
+- `Navigator.pushReplacement()`: mengganti route yang sedang tampil dengan route baru. Halaman lama dibuang dari stack.
+- `Navigator.pop()`: menghapus route teratas sehingga aplikasi kembali ke route di bawahnya.
+
+Untuk membuka formulir dari kartu aksi, proyek ini menggunakan `Navigator.push()` pada `ItemCard`:
+
+```dart
+Navigator.push(
+  context,
+  MaterialPageRoute(
+    builder: (context) => const ExperienceFormPage(),
+  ),
+);
+```
+
+Dengan cara ini, pengguna dapat kembali ke halaman utama menggunakan tombol Back bawaan perangkat.
+
+Opsi Home di drawer menggunakan `Navigator.pushReplacement()` ke `MyHomePage()`. Halaman formulir yang sedang tampil digantikan oleh halaman utama, sehingga pengguna langsung berada di halaman utama tanpa harus menekan tombol Back.
+
+### 2. Bagaimana susunan Scaffold, AppBar, dan Drawer membantu menjaga struktur halaman tetap konsisten? Berikan satu contoh penggunaan warna tema portofolio di lebih dari satu halaman.
+
+Scaffold menyediakan kerangka dasar halaman, yaitu AppBar di bagian atas, drawer di sisi kiri, dan body sebagai isi halaman. Karena setiap halaman memakai susunan yang sama, pengguna selalu menemukan navigasi di tempat yang sama.
+
+Drawer dibuat satu kali sebagai widget `LeftDrawer` pada `lib/widgets/left_drawer.dart`, lalu dipasang pada halaman utama, formulir proyek, dan formulir pengalaman melalui properti `drawer: const LeftDrawer()`. Dengan begitu, perubahan menu cukup dilakukan di satu tempat.
+
+Warna tema portofolio adalah indigo. Warna ini digunakan pada AppBar halaman utama (melalui `ColorScheme.fromSeed(seedColor: Colors.indigo)`), AppBar kedua halaman formulir (`backgroundColor: Colors.indigo`), header drawer, dan tombol Simpan.
+
+### 3. Mengapa tata letak tersebut dipilih untuk formulir? Jelaskan juga peran widget pengatur jarak dan widget penggulir ketika ruang layar terbatas.
+
+Formulir disusun menggunakan `Column` di dalam `Form` karena isian diisi secara berurutan dari atas ke bawah, yang paling natural pada layar ponsel.
+
+Setiap field dibungkus `Padding` agar tidak saling menempel dan memiliki jarak yang konsisten. `SizedBox` atau `Padding` digunakan untuk mengatur jarak antar-elemen.
+
+`Column` tidak dapat di-scroll secara bawaan. Karena itu, `Column` dibungkus `SingleChildScrollView` agar seluruh field dan tombol Simpan tetap dapat dijangkau pada layar sempit atau ketika papan ketik tampil. Halaman utama juga dibungkus `SingleChildScrollView` agar kisi kartu aksi tidak overflow ketika jumlah kartu bertambah.
+
+### 4. Apa peran GlobalKey<FormState>, validator, dan validate() saat tombol Simpan ditekan? Berikan satu contoh nilai yang ditolak oleh validasi dan jelaskan mengapa memilih jenis input atau papan ketik saja belum cukup.
+
+`GlobalKey<FormState>` dipasang pada widget `Form` agar kode di luar field, seperti tombol Simpan, dapat mengakses state form.
+
+`validator` adalah fungsi pada setiap field yang mengembalikan pesan error apabila isian tidak sesuai aturan, atau `null` apabila isian valid.
+
+Saat tombol Simpan ditekan, `_formKey.currentState!.validate()` menjalankan seluruh validator sekaligus, menampilkan pesan error pada field yang bermasalah, dan mengembalikan `true` hanya jika semua isian valid. Dialog ringkasan baru ditampilkan setelah itu.
+
+Contoh nilai yang ditolak adalah isian Posisi yang hanya berisi spasi (`"   "`), karena setelah `trim()` isiannya menjadi kosong. Contoh lain adalah tautan `abc` yang ditolak karena bukan URL http/https, serta tanggal selesai yang lebih awal dari tanggal mulai.
+
+Memilih jenis input atau papan ketik saja belum cukup karena hal tersebut hanya memengaruhi tampilan dan kenyamanan input. `TextInputType.url` tetap memperbolehkan pengguna mengetik teks apa pun, dan `showDatePicker` tidak mencegah pengguna memilih tanggal yang tidak masuk akal. Aturan data tetap harus diperiksa oleh validator.
+
+## AI Disclosure
+
+### Tools yang Digunakan
+- ChatGPT (OpenAI)
+
+### Penggunaan AI
+
+Saya menggunakan ChatGPT sebagai alat bantu selama pengerjaan Individual Assignment 8, terutama untuk memahami instruksi tugas, mempelajari konsep Flutter Navigation, Layouts, Forms, and Input Elements dari Tutorial 09, serta memahami implementasi fitur formulir Pengalaman (*Experience Form*).
+
+AI digunakan untuk membantu:
+- Memahami perbedaan `Navigator.push()`, `Navigator.pushReplacement()`, dan `Navigator.pushAndRemoveUntil()`, serta pengaruhnya terhadap navigation stack.
+- Memahami penggunaan widget layout seperti `SingleChildScrollView`, `Column`, `GridView`, `Padding`, dan `SizedBox`.
+- Memahami implementasi formulir menggunakan `StatefulWidget`, `Form`, `GlobalKey<FormState>`, dan validator.
+- Memahami perbedaan penggunaan `onChanged` dengan `setState()` dan `TextEditingController`.
+- Memahami pengelolaan lifecycle widget, termasuk penggunaan `dispose()` dan pengecekan `mounted` setelah operasi asynchronous.
+- Memahami penggunaan `Key` untuk mengatur ulang state Dropdown.
+- Memahami konsep modularitas dan pemisahan kode ke dalam direktori `screens/` dan `widgets/`.
+
+### Strategi Prompting
+
+Saya memberikan dokumen Individual Assignment 8, referensi commit terakhir Tutorial 09 pada repository GitHub, serta pertanyaan spesifik mengenai implementasi dan konsep Flutter yang digunakan. Selanjutnya, saya meminta ChatGPT untuk menjelaskan fungsi setiap komponen, membandingkan beberapa pendekatan implementasi, dan memberikan contoh kode yang relevan dengan struktur proyek yang sudah ada.
+Tautan: https://chatgpt.com/share/6b043ed2-e5d0-83ec-a4c2-a6db65822fc6
+
+### Evaluasi dan Modifikasi Manual
+
+Penjelasan dan contoh kode yang diberikan AI digunakan sebagai referensi untuk memahami konsep dan mengevaluasi implementasi secara mandiri. Saya tetap mengembangkan halaman Experience Form berdasarkan pemahaman terhadap materi Tutorial 09 dan menyesuaikannya dengan kebutuhan proyek portofolio.
+
+Saya juga meninjau kembali setiap saran AI agar sesuai dengan struktur proyek, kebutuhan tugas, dan perilaku aplikasi yang diharapkan. Seluruh implementasi akhir menjadi tanggung jawab saya, termasuk proses pengujian, debugging, dan verifikasi menggunakan `flutter analyze`.
