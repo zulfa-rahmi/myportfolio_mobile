@@ -96,7 +96,8 @@ class _ExperienceFormPageState extends State<ExperienceFormPage> {
       return null;
     }
     final uri = Uri.tryParse(text);
-    final isValid = uri != null &&
+    final isValid =
+        uri != null &&
         (uri.scheme == 'http' || uri.scheme == 'https') &&
         uri.host.contains('.');
     if (!isValid) {
@@ -159,7 +160,9 @@ class _ExperienceFormPageState extends State<ExperienceFormPage> {
               children: [
                 _buildSummaryRow('Posisi', _positionController.text.trim()),
                 _buildSummaryRow(
-                    'Organisasi', _organizationController.text.trim()),
+                  'Organisasi',
+                  _organizationController.text.trim(),
+                ),
                 _buildSummaryRow('Tipe', _type),
                 _buildSummaryRow('Mulai', _formatDate(_startDate!)),
                 _buildSummaryRow(
@@ -167,7 +170,9 @@ class _ExperienceFormPageState extends State<ExperienceFormPage> {
                   _isCurrent ? 'Masih berlangsung' : _formatDate(_endDate!),
                 ),
                 _buildSummaryRow(
-                    'Deskripsi', _descriptionController.text.trim()),
+                  'Deskripsi',
+                  _descriptionController.text.trim(),
+                ),
                 _buildSummaryRow('Tautan', link.isEmpty ? '-' : link),
               ],
             ),
@@ -215,9 +220,7 @@ class _ExperienceFormPageState extends State<ExperienceFormPage> {
       labelText: label,
       hintText: hint,
       prefixIcon: icon == null ? null : Icon(icon),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(5.0),
-      ),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
     );
   }
 
@@ -243,10 +246,7 @@ class _ExperienceFormPageState extends State<ExperienceFormPage> {
             decoration: _decoration(
               label: label,
               icon: Icons.calendar_today,
-            ).copyWith(
-              errorText: state.errorText,
-              enabled: enabled,
-            ),
+            ).copyWith(errorText: state.errorText, enabled: enabled),
             child: Text(text),
           ),
         );
@@ -258,9 +258,7 @@ class _ExperienceFormPageState extends State<ExperienceFormPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(
-          child: Text('Add Experience Form'),
-        ),
+        title: const Center(child: Text('Add Experience Form')),
         backgroundColor: Colors.indigo,
         foregroundColor: Colors.white,
       ),
@@ -286,8 +284,8 @@ class _ExperienceFormPageState extends State<ExperienceFormPage> {
                     hint: 'Contoh: Staff Business Development',
                     icon: Icons.badge_outlined,
                   ),
-                  validator: (value) => _validateRequiredText(
-                      value, 'Posisi', _maxTitleLength),
+                  validator: (value) =>
+                      _validateRequiredText(value, 'Posisi', _maxTitleLength),
                 ),
               ),
 
@@ -303,7 +301,10 @@ class _ExperienceFormPageState extends State<ExperienceFormPage> {
                     icon: Icons.business_outlined,
                   ),
                   validator: (value) => _validateRequiredText(
-                      value, 'Organisasi', _maxTitleLength),
+                    value,
+                    'Organisasi',
+                    _maxTitleLength,
+                  ),
                 ),
               ),
 
@@ -318,10 +319,10 @@ class _ExperienceFormPageState extends State<ExperienceFormPage> {
                   ),
                   initialValue: _type,
                   items: _types
-                      .map((type) => DropdownMenuItem(
-                            value: type,
-                            child: Text(type),
-                          ))
+                      .map(
+                        (type) =>
+                            DropdownMenuItem(value: type, child: Text(type)),
+                      )
                       .toList(),
                   onChanged: (String? newValue) {
                     setState(() {
@@ -337,9 +338,11 @@ class _ExperienceFormPageState extends State<ExperienceFormPage> {
                 child: _buildDateField(
                   label: 'Tanggal Mulai',
                   value: _startDate,
-                  validator: (_) =>
-                      _startDate == null ? 'Tanggal mulai wajib dipilih!' : null,
-                  onTapBuilder: (state) => () => _pickDate(
+                  validator: (_) => _startDate == null
+                      ? 'Tanggal mulai wajib dipilih!'
+                      : null,
+                  onTapBuilder: (state) =>
+                      () => _pickDate(
                         current: _startDate,
                         firstDate: DateTime(2015),
                         onPicked: (d) => _startDate = d,
@@ -383,7 +386,8 @@ class _ExperienceFormPageState extends State<ExperienceFormPage> {
                     }
                     return null;
                   },
-                  onTapBuilder: (state) => () => _pickDate(
+                  onTapBuilder: (state) =>
+                      () => _pickDate(
                         current: _endDate ?? _startDate,
                         firstDate: _startDate ?? DateTime(2015),
                         onPicked: (d) => _endDate = d,
